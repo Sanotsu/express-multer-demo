@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+
+  <div>
+    <h3>Express + multer 簡陋上傳文件</h3>
+    <form method="post" action="/upload" id="upload-form" encType="multipart/form-data">
+      <input id='upload' type="file" name="file" />
+      <input type="submit" value="上傳">
+    </form>
+
+    <!-- 进度条 -->
+    <progress id="uploadprogress" min="0" max="100" value="0">0</progress>
+    <p id='msg'></p>
+  </div>
+
+  <!-- 引入jquery.js -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+  <script>
+    let form = $("#upload-form");
+    form.on('submit', function (event) {
+
+      // 清除提交结果显示信息
+      $("#msg").html("");
+
+      // 在原页面处理，不跳转
+      event.preventDefault();
+
+      // 检查是否支持FormData
+      if (window.FormData) {
+        let formData = new FormData();
+
+        formData.append('dest', 'file_upload');
+
+        // 建立一个file表单项，值为上传的文件
+        formData.append('file', $('#upload').get(0).files[0]);
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', $(this).attr('action'));
+
+        // 进度条占比计算
+        xhr.upload.onprogress = function (event) {
+          if (event.lengthComputable) {
+            let complete = (event.loaded / event.total * 100 | 0);
+            $("#uploadprogress").val(complete);
+            $("#uploadprogress").innerHTML = complete;
+          }
+        };
+        // 定义上传完成后的回调函数
+        xhr.onload = function (e) {
+          if (xhr.status === 200) {
+            $("#msg").html("上传成功!");
+            // alert('上传成功！');
+          } else {
+            // alert('文件上传出错了！')
+            $("#msg").html("上传失败!");
+          }
+        };
+        // 发送表单数据
+        xhr.send(formData);
+      }
+    });
+  </script>
+
+</body>
+
+</html>
