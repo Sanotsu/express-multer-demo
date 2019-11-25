@@ -172,7 +172,7 @@ const upload = require('../util/Upload');
 &emsp;&emsp;&emsp;&emsp;2、多文件就要 upload.array(),单文件就用 upload.single()（后续都是单文件示例中说明）;  
 &emsp;&emsp;&emsp;&emsp;3、第二点()里面的标志字符串要和前台页面中的`<input id='upload' type="file" name="file" />`name 属性一致。
 
-&emsp;&emsp;如果步骤都正确，成功上传，应该可以看到前台页面如下：
+&emsp;&emsp;如果步骤都正确，成功上传，应该可以看到前台页面如下：  
 ![上传成功](./pic/上传成功.png)
 
 &emsp;&emsp;router 的回调中取得上传文件的信息，如下：
